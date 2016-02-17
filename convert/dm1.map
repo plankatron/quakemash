@@ -4266,7 +4266,7 @@
 "wait" "10"
 "lip" "4"
 "angle" "-2"
-"target"	"t3"
+"target"	"dm1_t3"
 "classname" "func_button"
 {
 ( -336 1612 -4 ) ( -400 1612 -4 ) ( -400 1568 -4 ) DOOR05_3 0 0 0 1.000000 1.000000
@@ -4280,7 +4280,7 @@
 {
 "wait" "8"
 "speed" "175"
-"targetname"	"t3"
+"targetname"	"dm1_t3"
 "spawnflags" "1"
 "angle" "180"
 "classname" "func_door"
@@ -4548,7 +4548,7 @@
 "classname" "light_flame_large_yellow"
 }
 {
-"target" "t2"
+"target" "dm1_t2"
 "classname" "func_button"
 {
 ( 512 1256 -128 ) ( 496 1256 -128 ) ( 496 1240 -128 ) DOOR05_3 0 0 0 1.000000 1.000000
@@ -4577,7 +4577,7 @@
 }
 {
 "classname" "trigger_teleport"
-"target" "t1"
+"target" "dm1_t1"
 {
 ( 284 1624 -136 ) ( 244 1624 -136 ) ( 244 1576 -136 ) TRIGGER 0 0 0 1.000000 1.000000
 ( 244 1576 -40 ) ( 244 1624 -40 ) ( 284 1624 -40 ) TRIGGER 0 0 0 1.000000 1.000000
@@ -4592,7 +4592,7 @@
 "classname" "info_teleport_destination"
 "origin" "448 1028 16"
 "angle" "90"
-"targetname" "t1"
+"targetname" "dm1_t1"
 }
 {
 "origin" "-520 736 136"
@@ -4609,7 +4609,7 @@
 "classname" "light"
 }
 {
-"targetname" "t2"
+"targetname" "dm1_t2"
 "classname" "func_door"
 "angle" "-2"
 "sounds" "4"
@@ -4623,7 +4623,7 @@
 }
 }
 {
-"targetname" "t2"
+"targetname" "dm1_t2"
 "classname" "func_door"
 "angle" "-2"
 {
