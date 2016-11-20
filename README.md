@@ -14,13 +14,17 @@ Extended Features - experimental gameplay that tries new things
 * using entity spawn positions as markers for randomly spawning within a certain radius
 * having monsters change behaviour based on either location, proximity to player, proximity to other monsters, or other data
 * better pathfinding for monsters so that they will always chase the player (so the player can start to herd monsters)
+* ability for player to create linked teleporters , on creation of teleporter , player would create a name for teleporter and optionally a destination teleporter. all teleporters can be linked to other teleporters
+* ability for player to create different types of monsters, weapon, ammo, powerups, level elements from "crafting stations" 
+* combination of sven coop and risk of rain game mode
 * survival coop mode 
 * faction warfare mode 
+* collecting runes could be a type of powerup or unlocking of certain abilities (grapple hook for instance)
 
-Zany Crazy Time Ideas - this section is for completely off the wall ideas that we put out there to be implemented or not
+Zany Crazy Time Ideas - this section is for completely off the wall ideas that we put out there to be implemented or not and might be out the scope of pure qc programming into actual engine modifications
 
 * 3d tile based player bases - based on http://oskarstalberg.com/game/house/index.html giving the player a type of tool that would allow them to essentially shoot a base that would seamlessly integrate itself into the surrounding geometry, the player would have an alternate shot that would also create or pack up bases. 
-* allow the axe to be a digging tool that would allow people to dig holes into certain types of level geometry
+* allow weapons to be a digging tool that would allow people to dig holes into certain types of level geometry
 * research procedural methods to feed the entire quakemash data set into a wave-collapse procedural generation algorithim that would expand the quakemash world further
 
 *notes*
