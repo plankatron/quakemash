@@ -8,6 +8,7 @@ Basic Features - getting vanilla quake working in a single level
 
 * zoned gravity areas (for e1m8)
 * dynamic difficulty modifications (for when you switch the difficulty level in start)
+* key pickup is removed on pickup, but when a player dies every key they're carrying respawns at their original location
 
 Extended Features - experimental gameplay that tries new things 
 
