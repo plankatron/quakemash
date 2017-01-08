@@ -1,5 +1,9 @@
 // lighting.c
 
+#ifdef _MSC_VER
+#define _CRT_SECURE_NO_WARNINGS
+#endif
+
 #include "light.h"
 
 qboolean	lightvis;
@@ -36,8 +40,10 @@ If a light has a targetname, generate a unique style in the 32-63 range
 ==============================================================================
 */
 
+#define FIRST_LIGHTSTYLE 32
+#define MAX_LIGHTSTYLES (255-FIRST_LIGHTSTYLE) // limit of bsp29 format
 int		numlighttargets;
-char	lighttargets[32][128];
+char	lighttargets[MAX_LIGHTSTYLES][128];
 
 /*
 ==================
@@ -50,15 +56,15 @@ int LightStyleForTargetname( char *targetname )
 
 	for( i = 0; i < numlighttargets; i++ ) {
 		if( !strcmp( lighttargets[i], targetname ) )
-			return 32 + i;
+			return FIRST_LIGHTSTYLE + i;
 	}
 
-	if( numlighttargets == 32 )
-		Error( "LightStyleForTargetname: numlighttargets == 32" );
+	if( numlighttargets == MAX_LIGHTSTYLES )
+		Error( "LightStyleForTargetname: numlighttargets == %i", MAX_LIGHTSTYLES );
 
 	strcpy( lighttargets[numlighttargets], targetname );
 	numlighttargets++;
-	return numlighttargets - 1 + 32;
+	return numlighttargets - 1 + FIRST_LIGHTSTYLE;
 }
 
 /*
@@ -398,7 +404,7 @@ void LightWorld( void )
 				if( (lightchainbufindex + leaf->nummarksurfaces) > LIGHTCHAINS )
 					Error( "LightWorld: ran out of light chains!  complain to maintainer of hlight\n" );
 
-				for( m = 0, mark = dmarksurfaces + leaf->firstmarksurface; m < leaf->nummarksurfaces; m++, mark++ ) {
+				for( m = 0, mark = dmarksurfaces + leaf->firstmarksurface; (unsigned int)m < leaf->nummarksurfaces; m++, mark++ ) {
 					if( surfacehit[*mark] )
 						continue;
 					surfacehit[*mark] = true;

@@ -31,10 +31,14 @@ typedef vec_t vec3_t[3];
 # define DIST_EPSILON       ((vec_t)0.0001)
 # define ZERO_EPSILON       ((vec_t)0.0001)
 # define POINT_EPSILON      ((vec_t)0.0001)
-# define ON_EPSILON         ((vec_t)0.0001)
+// LordHavoc: this epsilon was too tight, causing a crash in SplitFace on fleeky's quakemash project
+//# define ON_EPSILON         ((vec_t)0.0001)
+# define ON_EPSILON         ((vec_t)0.001)
 # define EQUAL_EPSILON      ((vec_t)0.0001)
 # define CONTINUOUS_EPSILON ((vec_t)0.0001)
-# define T_EPSILON          ((vec_t)0.0001)
+// LordHavoc: this epsilon was too tight, causing a crash in FixFaceEdges on fleeky's quakemash project
+//# define T_EPSILON          ((vec_t)0.0001)
+# define T_EPSILON          ((vec_t)0.001)
 #else
 # define NORMAL_EPSILON     ((vec_t)0.00001)
 # define ANGLE_EPSILON      ((vec_t)0.00001)

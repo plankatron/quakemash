@@ -86,7 +86,7 @@ void CalcAmbientSounds (void)
 		//	
 			hit = &dleafs[j+1];
 
-			for (k=0 ; k< hit->nummarksurfaces ; k++)
+			for (k=0 ; (unsigned int)k< hit->nummarksurfaces ; k++)
 			{
 				surf = &dfaces[dmarksurfaces[hit->firstmarksurface + k]];
 				info = &texinfo[surf->texinfo];

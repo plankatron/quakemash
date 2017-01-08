@@ -1,4 +1,8 @@
 
+#ifdef _MSC_VER
+#define _CRT_SECURE_NO_WARNINGS
+#endif
+
 #include "cmdlib.h"
 #include "mathlib.h"
 #include "bspfile.h"
@@ -217,9 +221,9 @@ LoadBSPFile
 */
 void	LoadBSPFile (char *filename)
 {
-	int				i, j;
+	int				i, j, headerend;
 	swappedbuffer_t	sb;
-	lump_t			lumps[HEADER_LUMPS], *lump;
+	lump_t			lumps[BSP2HEADER_LUMPS], *lump;
 	qboolean isbsp2 = false;
 	ismcbsp = false;
 
@@ -275,10 +279,19 @@ void	LoadBSPFile (char *filename)
 		VectorSet (hullinfo.hullsizes[2][1], 32, 32, 64);
 	}
 
-	for (i = 0; i < HEADER_LUMPS; i++)
+	// parse extended header (up to 128 lumps) by keeping track of first offset
+	headerend = 4+sizeof(lumps);
+	for (i = 0; i < BSP2HEADER_LUMPS; i++)
 	{
-		lumps[i].fileofs = SB_ReadInt (&sb);
-		lumps[i].filelen = SB_ReadInt (&sb);
+		if((unsigned int)headerend >= 4+(i+1)*sizeof(lumps[0]))
+		{
+			lumps[i].fileofs = SB_ReadInt (&sb);
+			lumps[i].filelen = SB_ReadInt (&sb);
+			if (headerend > lumps[i].fileofs && lumps[i].filelen)
+				headerend = lumps[i].fileofs;
+		}
+		else
+			lumps[i].fileofs = lumps[i].filelen = 0;
 	}
 
 // read lumps (sigh...)
@@ -583,7 +596,7 @@ void WriteBSPFile (char *filename, qboolean litonly)
 	{
 		int		index;
 		int		bspsize;
-		lump_t	lumps[HEADER_LUMPS], *lump;
+		lump_t	lumps[BSP2HEADER_LUMPS], *lump;
 
 	// allocate as much memory is needed for the buffer -- sorry about this! Please do something about this!
 		if (ismcbsp)
@@ -927,7 +940,8 @@ void WriteBSPFile (char *filename, qboolean litonly)
 			SB_WriteInt (&sb, BSPVERSION);
 		}
 
-		for (i = 0; i < HEADER_LUMPS; i++)
+		// always write full BSP2 lumps, this is for future-proofing
+		for (i = 0; i < BSP2HEADER_LUMPS; i++)
 		{
 			SB_WriteInt (&sb, lumps[i].fileofs);
 			SB_WriteInt (&sb, lumps[i].filelen);

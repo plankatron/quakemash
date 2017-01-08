@@ -186,7 +186,7 @@ wedge_t	*FindEdge (vec3_t p1, vec3_t p2, vec_t *t1, vec_t *t2)
 	VectorCopy (origin, w->origin);
 	VectorCopy (dir, w->dir);
 	w->head.next = w->head.prev = &w->head;
-	w->head.t = 99999;
+	w->head.t = 1024.0*1024.0*1024.0;
 	return w;
 }
 
@@ -384,6 +384,13 @@ restart:
 	for (i=0 ; i < superface->numpoints ; i++)
 	{
 		j = (i+1)%superface->numpoints;
+
+		// LordHavoc: impose a limit of MAX_VERTS_ON_SUPERFACE
+		if (superface->numpoints >= MAX_VERTS_ON_SUPERFACE)
+		{
+			qprintf("FixFaceEdges: runaway loop detected, hit MAX_VERTS_ON_SUPERFACE\n");
+			break;
+		}
 
 		w = FindEdge (superface->points[i], superface->points[j], &t1, &t2);
 		if (!w)

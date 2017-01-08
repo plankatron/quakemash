@@ -1,5 +1,9 @@
 // cmdlib.c
 
+#ifdef _MSC_VER
+#define _CRT_SECURE_NO_WARNINGS
+#endif
+
 #ifndef WIN32
 #define USEGETTIMEOFDAY 1
 #endif
@@ -152,7 +156,7 @@ void Q_getwd (char *out)
 void Q_mkdir (char *path)
 {
 #ifdef WIN32
-  if (mkdir (path) != -1)
+  if (_mkdir (path) != -1)
 #else
   if (mkdir (path, 0777) != -1)
 #endif
@@ -168,7 +172,7 @@ FileTime
 returns -1 if not present
 ============
 */
-int	FileTime (char *path)
+time_t	FileTime (char *path)
 {
   struct	stat	buf;
 

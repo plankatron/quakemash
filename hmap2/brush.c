@@ -2,10 +2,10 @@
 
 #include "bsp5.h"
 
-int			numbrushfaces;
-mface_t		faces[MAX_FACES];		// beveled clipping hull can generate many extra
+static int			numbrushfaces;
+static mface_t		faces[MAX_FACES];		// beveled clipping hull can generate many extra
 
-entity_t *CurrentEntity;
+static entity_t *CurrentEntity;
 
 //============================================================================
 
@@ -495,9 +495,16 @@ void ExpandBrush (int hullnum)
 		mf = &faces[i];
 		for (x=0 ; x<3 ; x++)
 		{
+			// LordHavoc: fixed a bug here that happens on denormals - the
+			// corner selection in qbsp did not assign a value to corner[x] at
+			// all if the normal[x] is zero, which is usually considered to be
+			// the case with a denormal, but when you multiply by a denormal
+			// you still get a real number - so if the corner[x] is a NAN you
+			// get that value multiplied by anything and get a NAN back :( -
+			// separately I also prevent denormals from getting this far.
 			if (mf->plane.normal[x] > 0)
 				corner[x] = -hullinfo.hullsizes[hullnum][0][x];
-			else if (mf->plane.normal[x] < 0)
+			else /*if (mf->plane.normal[x] < 0)*/
 				corner[x] = -hullinfo.hullsizes[hullnum][1][x];
 		}
 		mf->plane.dist += DotProduct (corner, mf->plane.normal);

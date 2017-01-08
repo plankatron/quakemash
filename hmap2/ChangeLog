@@ -1,4 +1,97 @@
 ------------------------------------------------------------------------
+r12320 | havoc | 2017-01-07 13:16:09 -0800 (Sat, 07 Jan 2017) | 6 lines
+Changed paths:
+   M /trunk/hmap2/bspfile.h
+
+Use unsigned int for firstface/numfaces in dnode_t (which despite the
+name is not a disk structure anymore), as otherwise BSP2 gets truncated
+during processing
+
+Thanks to Spoike for pointing out the bug.
+
+------------------------------------------------------------------------
+r12313 | havoc | 2016-12-31 21:19:39 -0800 (Sat, 31 Dec 2016) | 3 lines
+Changed paths:
+   M /trunk/hmap2/light.c
+
+raise max lightstyles created for targetnames to 223 (32-254)), was 32
+(32-63) which quakemash exceeds easily
+
+------------------------------------------------------------------------
+r12312 | havoc | 2016-12-30 19:42:23 -0800 (Fri, 30 Dec 2016) | 18 lines
+Changed paths:
+   M /trunk/hmap2/brush.c
+   M /trunk/hmap2/map.c
+   M /trunk/hmap2/mathlib.h
+   M /trunk/hmap2/tjunc.c
+
+fixed severe bug in ExpandBrush that existed since qbsp where negative
+zeros in plane normals cause undefined behavior when computing corner[],
+this occurred in fleeky's quakemash maps where negative zeros combined
+with the specific brush order resulted in NAN in linux 32bit builds of
+hmap2 (but not 64bit builds, usually - it was undefined behavior so it
+isn't entirely predictable)
+
+skip brushes with NAN or zero normals on planes and print a warning with
+the line number
+check for NAN in plane normals
+change negative zero values in plane normals to actual zero (the
+ExpandBrush bug is fixed but there is no reason for negative zero in
+plane normals to get this far), this also snaps denormals to zero
+(highly unlikely but could happen)
+adjusted ON_EPSILON and T_EPSILON to fix problems with quakemash
+added check for MAX_MAP_BRUSHES
+added check for MAX_VERTS_ON_SUPERFACE
+
+------------------------------------------------------------------------
+r12311 | havoc | 2016-12-11 22:57:16 -0800 (Sun, 11 Dec 2016) | 3 lines
+Changed paths:
+   M /trunk/hmap2/Makefile
+
+Set stack size on hmap2 mingw builds so that very large maps do not
+crash in RecursiveFillOutside.
+
+------------------------------------------------------------------------
+r12310 | havoc | 2016-12-11 22:48:30 -0800 (Sun, 11 Dec 2016) | 3 lines
+Changed paths:
+   M /trunk/hmap2/bsp5.h
+   M /trunk/hmap2/bspfile.c
+   M /trunk/hmap2/cmdlib.c
+   M /trunk/hmap2/cmdlib.h
+   A /trunk/hmap2/hmap2.sln
+   A /trunk/hmap2/hmap2.vcxproj
+   M /trunk/hmap2/light.c
+   M /trunk/hmap2/vis.c
+   M /trunk/hmap2/vis_sound.c
+
+Add MSVS2015 project files.
+
+Fix some warnings in MSVS2015.
+------------------------------------------------------------------------
+r12064 | havoc | 2014-04-25 18:43:03 -0700 (Fri, 25 Apr 2014) | 2 lines
+Changed paths:
+   M /trunk/hmap2/Makefile
+
+mingw build now uses --large-address-aware on the linker flags
+
+------------------------------------------------------------------------
+r12063 | havoc | 2014-04-25 18:34:30 -0700 (Fri, 25 Apr 2014) | 3 lines
+Changed paths:
+   M /trunk/hmap2/bspfile.h
+
+lower the MAX_MAP_EDGES so that the compiler doesn't need 640MB of BSS
+for faces.c (80MB instead)
+
+------------------------------------------------------------------------
+r11720 | havoc | 2012-02-21 14:01:11 -0800 (Tue, 21 Feb 2012) | 3 lines
+Changed paths:
+   M /trunk/hmap2/bspfile.c
+   M /trunk/hmap2/bspfile.h
+
+pad BSP header to 128 lumps, for future use, parse varying length header
+intelligently as well
+
+------------------------------------------------------------------------
 r11705 | havoc | 2012-02-20 05:09:30 -0800 (Mon, 20 Feb 2012) | 2 lines
 Changed paths:
    M /trunk/hmap2/bspfile.h

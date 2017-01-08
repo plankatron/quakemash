@@ -1,6 +1,10 @@
 
 // bsp5.h
 
+#ifdef _MSC_VER
+#define _CRT_SECURE_NO_WARNINGS
+#endif
+
 #include <math.h>
 #include "cmdlib.h"
 #include "mathlib.h"

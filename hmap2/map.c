@@ -32,6 +32,14 @@ int	FindPlane( plane_t *dplane, int *side )
 	vec_t		dot;
 
 	pl = *dplane;
+
+	// check validity of the plane before matching it against known planes, as a NAN could match anything
+	dot = VectorLength( dplane->normal );
+	if( isnan( dot ) || isnan( dplane->dist ) )
+		Error( "FindPlane: plane has NAN normal or dist (%f %f %f, %f) ", dplane->normal[0], dplane->normal[1], dplane->normal[2], dplane->dist );
+	if( fabs( dot - 1.0f ) > ANGLE_EPSILON )
+		Error( "FindPlane: normalization error (%f %f %f, length %f)", dplane->normal[0], dplane->normal[1], dplane->normal[2], dot );
+
 	NormalizePlane( &pl );
 
 	if( DotProduct( pl.normal, dplane->normal ) > 0 )
@@ -46,10 +54,6 @@ int	FindPlane( plane_t *dplane, int *side )
 
 	if( nummapplanes == MAX_MAP_PLANES )
 		Error( "FindPlane: nummapplanes == MAX_MAP_PLANES" );
-
-	dot = VectorLength( dplane->normal );
-	if( dot < 1.0 - ANGLE_EPSILON || dot > 1.0 + ANGLE_EPSILON )
-		Error( "FindPlane: normalization error (%f %f %f, length %f)", dplane->normal[0], dplane->normal[1], dplane->normal[2], dot );
 
 	mapplanes[nummapplanes] = pl;
 
@@ -323,11 +327,31 @@ void ParseBrushFace (entity_t *ent, mbrush_t **brushpointer, brushtype_t brushty
 	// skip trailing info (the 3 q3 .map parameters for example)
 	while (GetToken (false));
 
+	// check for degenerate planes (all three points in line with eachother)
 	if (DotProduct(plane.normal, plane.normal) < 0.1)
 	{
 		printf ("WARNING: line %i: brush plane with no normal\n", scriptline);
 		return;
 	}
+
+	// check for really bogus planes
+	if( isnan( DotProduct(plane.normal, plane.normal) ) || isnan( plane.dist ) )
+	{
+		printf( "WARNING: line %i: brush plane evaluates to NAN (%f %f %f, %f)\n", scriptline, plane.normal[0], plane.normal[1], plane.normal[2], plane.dist );
+		return;
+	}
+
+	// LordHavoc: explicitly fix negative zeros in the plane for cleanliness
+	// reasons - these were discovered to be a problem with ExpandBrush which
+	// was bugged (all the way back to qbsp) where it didn't set corner[x] if
+	// normal[x] is -0, resulting in NANs and other evil uninitialized values
+	// sneaking their way into the DotProduct, that bug has been fixed but we
+	// still don't want to represent -0 in the bsp if we can avoid it
+	for (i = 0;i < 3;i++)
+		if (fabs(plane.normal[i]) < 0.000001)
+			plane.normal[i] = 0;
+	if (fabs(plane.dist) < 0.000001)
+		plane.dist = 0;
 
 	scale[0] = 1.0 / scale[0];
 	scale[1] = 1.0 / scale[1];
@@ -529,6 +553,16 @@ void ParseBrushFace (entity_t *ent, mbrush_t **brushpointer, brushtype_t brushty
 	}
 	else
 	{
+		if (nummapbrushes == MAX_MAP_BRUSHES)
+		{
+			static int warned = 0;
+			if (!warned)
+			{
+				warned = 1;
+				printf ("WARNING: map exceeds MAX_MAP_BRUSHES (%i) at line %i\n", nummapbrushes, scriptline );
+			}
+			return;
+		}
 		b = &mapbrushes[nummapbrushes];
 		nummapbrushes++;
 		b->next = ent->brushes;

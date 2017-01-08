@@ -1,7 +1,7 @@
 ##### Win32 variables #####
 
 WIN32_HMAP_EXE=hmap2.exe
-WIN32_LDFLAGS=-lwinmm
+WIN32_LDFLAGS=-Wl,--large-address-aware -Wl,--stack,16777216 -lwinmm
 
 ##### Unix variables #####
 
