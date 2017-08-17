@@ -31,8 +31,8 @@ Zany Crazy Time Ideas - this section is for completely off the wall ideas that w
 *notes*
 
 *recommended engine is latest build of darkplaces http://icculus.org/twilight/darkplaces/files/darkplacesengineautobuild.zip
-*latest version of fteqw has been tested, loads the map but has an odd audio echo bug
-*version of quakespasm that should work with quakemash http://triptohell.info/moodles/qss/quakespasm-spike-r7.zip
+*latest version of fteqw has been tested, loads the map but has an odd audio echo bug, make sure to type sv_bigcoords 1 to set fteqw to render the level properly
+*version of quakespasm that should work with quakemash http://triptohell.info/moodles/qss/quakespasm-spike-r7.zip , make sure to type sv_protocol 999 to force quakespasm to render the level properly
 *pixelated textures:
 *gl_texturemode gl_nearest_mipmap_linear in console
 
