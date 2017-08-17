@@ -29,10 +29,11 @@ Zany Crazy Time Ideas - this section is for completely off the wall ideas that w
 * research procedural methods to feed the entire quakemash data set into a wave-collapse procedural generation algorithim that would expand the quakemash world further
 
 *notes*
-recommended engine is latest build of darkplaces http://icculus.org/twilight/darkplaces/files/darkplacesengineautobuild.zip
-version of quakespasm that should work with quakemash http://triptohell.info/moodles/qss/quakespasm-spike-r7.zip
-pixelated textures:
-gl_texturemode gl_nearest_mipmap_linear in console
+
+*recommended engine is latest build of darkplaces http://icculus.org/twilight/darkplaces/files/darkplacesengineautobuild.zip
+*version of quakespasm that should work with quakemash http://triptohell.info/moodles/qss/quakespasm-spike-r7.zip
+*pixelated textures:
+*gl_texturemode gl_nearest_mipmap_linear in console
 
 pixelated shadows:
 r_shadow_shadowmapping_useshadowsampler 0
